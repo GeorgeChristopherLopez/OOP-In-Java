@@ -47,14 +47,21 @@ class Fraction {
            Fraction res = other;
            res.denominator = other.denominator + denominator;
            res.numerator = other.numerator + numerator;
+           System.out.println(other.numerator+"/"+other.denominator + " + "+ numerator + "/" +denominator + " = " + res.numerator+"/"+res.denominator);
            return res;
     }
+
+
     public Fraction subtract (Fraction other){
 return other;
     }
+
+
     public Fraction multipy(Fraction other){
 return other;
     }
+
+
     public Fraction divide(Fraction other){
 return other;
     }
