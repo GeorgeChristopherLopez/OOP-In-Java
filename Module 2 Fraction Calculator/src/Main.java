@@ -3,11 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main (String[] args){
         greeting();
-        Scanner input = new Scanner(System.in);
-        getOperation(input);
-        Fraction test = getFraction(input);
-        Fraction test2 = getFraction(input);
-        test.add((test2));
+        FractionCalculator();
     }
 
     public static void greeting (){
@@ -25,8 +21,8 @@ public class Main {
                 System.out.print("Please enter an operation (+, -, *, /, or Q to quit) ");
                 op = input.nextLine();
 
-                if (op.equals("Q")) {
-                    System.exit(1);
+                if (op.equals("Q") || op.equals("q")) {
+                    System.exit(0);
                 }
                 if (op.equals("/") || op.equals("*") || op.equals("+") || op.equals("-")) {
                     validOp = true;
@@ -64,7 +60,7 @@ public class Main {
         boolean validFrac = false;
         Fraction fraction = new Fraction();
         while (validFrac == false) {
-            System.out.print("Please enter a fraction (a/b) or integer (a)");
+            System.out.print("Please enter a fraction (a/b) or integer (a) ");
             String res = input.nextLine();
             if (validFraction(res)) {
                 String[] arr = res.split("/");
@@ -83,4 +79,41 @@ public class Main {
         }
         return fraction;
     }
+
+    public static void FractionCalculator(){
+        Scanner input = new Scanner(System.in);
+        boolean on = true;
+        while (on = true){
+            String op = getOperation(input);
+            if (op.equals("Q") || op.equals("q")) {
+
+                System.exit(1);
+            }
+            Fraction test = getFraction(input);
+            Fraction test2 = getFraction(input);
+            switch (op) {
+                case "+":
+                    test.add(test2);
+                    break;
+                case "-":
+                    test.subtract(test2);
+                    break;
+                case "/":
+                    test.divide(test2);
+                    break;
+                case "*":
+                    test.multipy(test2);
+                    break;
+
+                default:
+                    System.out.println("invalid entry");
+                    break;
+            }
+            System.out.println("---------------------------------------------------------------------");
+        }
+
+
+    }
+
+
 }

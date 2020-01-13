@@ -44,26 +44,69 @@ class Fraction {
         return num/den;
     }
     public Fraction add(Fraction other){
-           Fraction res = other;
-           res.denominator = other.denominator + denominator;
-           res.numerator = other.numerator + numerator;
-           System.out.println(other.numerator+"/"+other.denominator + " + "+ numerator + "/" +denominator + " = " + res.numerator+"/"+res.denominator);
+           Fraction res = new Fraction(other.numerator, other.denominator);
+           int gcd = gcd(res.denominator, this.denominator);
+
+
+           if(gcd == res.denominator){
+               res.numerator = res.numerator + this.numerator*(gcd/this.denominator);
+           } else if (gcd == this.denominator){
+               res.numerator = res.numerator*(gcd/res.denominator) + this.numerator;
+           } else {
+               res.numerator = (res.numerator * this.denominator) + (this.numerator* res.denominator);
+           }
+           res.denominator = gcd;
+
+           System.out.println(numerator + "/" +denominator + " + "+ other.numerator+"/"+other.denominator +   " = " + res.numerator+"/"+res.denominator);
+
            return res;
     }
 
 
     public Fraction subtract (Fraction other){
-return other;
+        Fraction res = new Fraction(other.numerator, other.denominator);
+        int gcd = gcd(res.denominator, this.denominator);
+
+
+        if(gcd == res.denominator){
+            res.numerator =  this.numerator*(gcd/this.denominator) - res.numerator;
+        } else if (gcd == this.denominator){
+            res.numerator =  this.numerator-res.numerator*(gcd/res.denominator);
+        } else {
+            res.numerator =  (this.numerator* res.denominator)-(res.numerator * this.denominator);
+        }
+        res.denominator = gcd;
+
+        System.out.println(numerator + "/" +denominator + " - "+ other.numerator+"/"+other.denominator +   " = " + res.numerator+"/"+res.denominator);
+        return res;
     }
 
 
     public Fraction multipy(Fraction other){
-return other;
+        Fraction res = new Fraction(other.numerator, other.denominator);
+
+
+
+        res.numerator = this.numerator* other.numerator;
+        res.denominator = this.denominator* other.denominator;
+
+        System.out.println(numerator + "/" +denominator + " * "+ other.numerator+"/"+other.denominator +   " = " + res.numerator+"/"+res.denominator);
+
+        return res;
     }
 
 
     public Fraction divide(Fraction other){
-return other;
+        Fraction res = new Fraction(other.numerator, other.denominator);
+
+
+
+        res.numerator = this.numerator * other.denominator;
+        res.denominator = this.denominator * other.numerator;
+
+        System.out.println(numerator + "/" +denominator + " / "+ other.numerator+"/"+other.denominator +   " = " + res.numerator+"/"+res.denominator);
+
+        return res;
     }
     public boolean equals(Object other){
         if(other == this){
