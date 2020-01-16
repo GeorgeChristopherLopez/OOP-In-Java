@@ -108,13 +108,16 @@ class Fraction {
 
         return res;
     }
-    public boolean equals(Object other){
-        if(other == this){
-            return true;
-        } else {
-            return false;
+
+        public boolean equals(Object obj) {
+            if(this == obj)
+               return true;
+            if(obj == null || obj.getClass()!= this.getClass())
+                return false;
+            Fraction other = (Fraction) obj;
+            return (other.toDouble() == this.toDouble());
         }
-    }
+
     public void toLowestTerms(){
 
     }

@@ -91,24 +91,31 @@ public class Main {
             }
             Fraction test = getFraction(input);
             Fraction test2 = getFraction(input);
-            switch (op) {
-                case "+":
-                    test.add(test2);
-                    break;
-                case "-":
-                    test.subtract(test2);
-                    break;
-                case "/":
-                    test.divide(test2);
-                    break;
-                case "*":
-                    test.multipy(test2);
-                    break;
+            boolean equal = test.equals((test2));
+           if(equal){
+               System.out.println(("these are equal fractions"));
+                break;
+           } else {
+               switch (op) {
+                   case "+":
+                       test.add(test2);
+                       break;
+                   case "-":
+                       test.subtract(test2);
+                       break;
+                   case "/":
+                       test.divide(test2);
+                       break;
+                   case "*":
+                       test.multipy(test2);
+                       break;
 
-                default:
-                    System.out.println("invalid entry");
-                    break;
-            }
+                   default:
+                       System.out.println("invalid entry");
+                       break;
+
+               }
+        }
             System.out.println("---------------------------------------------------------------------");
         }
 
