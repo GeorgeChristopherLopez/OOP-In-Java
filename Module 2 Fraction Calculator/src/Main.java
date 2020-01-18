@@ -91,6 +91,12 @@ public class Main {
             }
             Fraction test = getFraction(input);
             Fraction test2 = getFraction(input);
+
+            //RAWR test
+
+            test.gcf(test.getNumerator(), test.getDenominator());
+            test2.gcf(test2.getNumerator(), test2.getDenominator());
+
             boolean equal = test.equals((test2));
            if(equal){
                System.out.println(("these are equal fractions"));

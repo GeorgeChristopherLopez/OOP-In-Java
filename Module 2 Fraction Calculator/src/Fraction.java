@@ -56,7 +56,7 @@ class Fraction {
                res.numerator = (res.numerator * this.denominator) + (this.numerator* res.denominator);
            }
            res.denominator = gcd;
-
+                 res.toLowestTerms();
            System.out.println(numerator + "/" +denominator + " + "+ other.numerator+"/"+other.denominator +   " = " + res.numerator+"/"+res.denominator);
 
            return res;
@@ -119,23 +119,41 @@ class Fraction {
         }
 
     public void toLowestTerms(){
-
+             int gcf = gcf(this.numerator,this.denominator);
+             this.numerator = this.numerator / gcf;
+             this.denominator = this.denominator / gcf;
     }
-    public static int gcd(int num, int num2){
+    public static int gcd(int num1, int num2){
+           int num = num1;
           if(num > num2){
               if(num % num2 == 0){
-                  return num;
+                     num = num;
               } else {
-                  return  num * num2;
+                  num =  num * num2;
               }
           } else if (num2 > num){
               if(num2%num==0){
-                  return num2;
+                  num = num2;
               } else {
-                  return  num2 * num;
+                  num =  num2 * num;
               }
-          } else {
-              return num;
           }
+                System.out.println("Greatest common denominator of given numbers is: "+ num);
+            
+          
+              return num;
     }
+
+    public static int gcf(int num1, int num){
+           int num2 = num;
+        while (num1 != num2) {
+            if(num1 > num2)
+                num1 = num1 - num2;
+            else
+                num2 = num2 - num1;
+        }
+
+        System.out.println("Greatest common factor of given numbers is: "+ num2);
+        return num2;
+        }
 }
