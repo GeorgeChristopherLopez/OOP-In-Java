@@ -9,6 +9,10 @@ public class Program
         CTO.addReport(seA);
         CTO.addReport(seB);
         CTO.addReport(seC);
+        seA.setCodeAccess(true);
+        seA.checkInCode();
+        seB.checkInCode();
+        seC.checkInCode();
         System.out.println(CTO.getTeamStatus());
         
         TechnicalLead VPofENG = new TechnicalLead("Bill Gates");
@@ -30,7 +34,7 @@ public class Program
         System.out.println(CFO.getTeamStatus());
         
         // check codes
-        
+     
         // approve budgets
         
         
@@ -85,7 +89,7 @@ public class Program
     
     public String toString(){
     //Should return a String representation of the employee that is a combination of their id followed by their name. Example: "1 Kasey"  
-    return this.employeeStatus();
+    return this.name;
     }
     
     public String employeeStatus(){
@@ -147,11 +151,15 @@ public  class TechnicalEmployee extends Employee {
     //Should establish a running tally of the remaining bonusBudget for the team this employee supports. How that budget is determined will depend on which type of Business Employee it is
         return this.bonusBudget;
     }	
-    
-    public void setBonusBudget(double amt){
+      public void setBonusBudget(double amt){
     //*************************************************************
     // sets budget
     this.bonusBudget = amt;
+    }
+    public void upBonusBudget(double amt){
+    //*************************************************************
+    // sets budget
+    this.bonusBudget += amt;
     }	
     
     public String employeeStatus(){
@@ -221,12 +229,12 @@ public  class TechnicalEmployee extends Employee {
             this.getBaseSalary();
             
             this.headCount = 4;
-             this.directReports = new ArrayList<Employee>(4);
+            this.directReports = new ArrayList<Employee>(4);
           
         }
         
         public double getBaseSalary (){
-            return super.getBaseSalary() * 1.3;
+            return super.getBaseSalary()*1.3;
         }
         
         public boolean hasHeadCount() {
@@ -252,8 +260,9 @@ public  class TechnicalEmployee extends Employee {
         
         public boolean approveCheckIn(SoftwareEngineer e){
             //	Should see if the employee passed in does report to this manager and if their code access is currently set to "true". If both those things are true, true is returned, otherwise false is returned
-         if(e.getManager().equals(this) && e.getCodeAccess()){//Should see if the employee passed in does report to this manager and if their code access is currently set to "true".
-            return true;// If both those things are true, true is returned, otherwise false is returned
+         if(e.getManager().equals(this) && e.getCodeAccess()){//Should see if the employee passed in does report to this manager and if their code access is currently set to "true".  If both those things are true, true is returned, otherwise false is returned
+            super.checkInCode();
+            return true;
         } else {
             return false;
         }
@@ -264,15 +273,23 @@ public  class TechnicalEmployee extends Employee {
             System.out.println(this.getManager());
             return false;
         }
-        
+        public ArrayList<Employee> getDirectReports(){
+            return this.directReports;
+        }
         public String getTeamStatus()	{
          //Should return a String that gives insight into this Manager and all their direct reports. It should return a string that is a combination of the TechnicalLead's employee status followed by each of their direct employee's status on subsequent lines. If the TechnicalLead has no reports it should print their employee status followed by the text " and no direct reports yet ". Example: "10 Kasey has 5 successful check ins and no direct reports yet". If the TechnicalLead does have reports it might look something like "10 Kasey has 5 successful check ins and is managing: /n 5 Niky has 2 successful check ins"
              String team = "";
-             for (int i = 0; i < this.directReports.size(); i++) {
-            team+="\n"+(directReports.get(i));
+            if(directReports.size() >0){
+               
+                for (int i = 0; i < this.directReports.size(); i++) 
+                team+="\n"+(directReports.get(i).employeeStatus());
+             } else {
+               team = "and no direct reports yet "; 
+                 
              }
+            
         
-            return "Team Lead: \n"+this.employeeStatus() + "\nManaging: " +team;
+            return "Team Lead: "+this.employeeStatus() + "\nManaging: " +team;
         }  
             
     public String employeeStatus(){
@@ -290,16 +307,26 @@ public  class TechnicalEmployee extends Employee {
         public Accountant(String name){
             //Should start with a bonus budget of 0 and no team they are officially supporting
             super(name);
-            super.setBonusBudget(0);
+            this.setBonusBudget(0);
         
         }	
         public TechnicalLead getTeamSupported(){
             //Should return a reference to the TechnicalLead that this Accountant is currently supporting. If they have not been assigned a TechnicalLead null should be returned
-            
-        return null;
+           if(this.teamSupported!=null)
+            return this.teamSupported;
+           else
+            return null;
         }	
         public void supportTeam(TechnicalLead lead){
             //Should allow a reference to a TechnicalLead to be passed in and saved. Once this happens the Accountant's bonus budget should be updated to be the total of each SoftwareEngineer's base salary that reports to that TechnicalLead plus 10%. For example, if the TechnicalLead supports 2 SoftwareEngineers, each with a salary of 75000, the Accountant's budget should be 150000 + 15000 for a total of 165000
+            this.teamSupported = lead;
+            double total = 0;
+            System.out.println(lead.getDirectReports());
+            for(int i = 0; i < lead.getDirectReports().size(); i++){
+            
+            total += ((lead.getDirectReports().get(i).getBaseSalary()) * 1.1);
+            }
+            this.setBonusBudget(total);
        
         }	
         public boolean approveBonus(double bonus){
@@ -309,7 +336,7 @@ public  class TechnicalEmployee extends Employee {
         }	
         public String employeeStatus(){
             //Should return a String representation of this Accountant that includes their ID, name, the size of their currently managed budget and the name of the TechnicalLead they are currently supporting. Example: "1 Kasey with a budget of 22500.0 is supporting Satya Nadella"
-           return super.employeeStatus() + ""; 
+           return super.employeeStatus() +" is supporting "+ this.getTeamSupported(); 
         }	
     }
 
@@ -322,13 +349,13 @@ public  class TechnicalEmployee extends Employee {
        public BusinessLead(String name)	{
         //Should create a new BusinessLead that is a Manager. The BusinessLead's base salary should be twice that of an Accountant. They should start with a head count of 10.   
            super(name);
-           double variable = super.getBaseSalary();
-           variable*=2;
+           this.getBaseSalary();
+           
            this.headCount = 10;
             this.directReports = new ArrayList<Employee>(10);
        }
           public double getBaseSalary (){
-            return super.getBaseSalary();
+            return super.getBaseSalary()*2;
         }
        public boolean hasHeadCount(){
        //	Should return true if the number of direct reports this manager has is less than their headcount.   
@@ -345,8 +372,8 @@ public  class TechnicalEmployee extends Employee {
             if(this.hasHeadCount()){
                 this.directReports.add(a);
                 a.setManager(this);
-                double variable = super.getBonusBudget();
-                variable += (1.1 * a.getBaseSalary());
+                a.supportTeam(supportTeam);
+                super.upBonusBudget(1.1 * a.getBaseSalary());
                 return true;
             } else {
                 return false;
@@ -364,12 +391,12 @@ public  class TechnicalEmployee extends Employee {
         }
                 public String getTeamStatus()	{
          //Should return a String that gives insight into this Manager and all their direct reports. It should return a string that is a combination of the TechnicalLead's employee status followed by each of their direct employee's status on subsequent lines. If the TechnicalLead has no reports it should print their employee status followed by the text " and no direct reports yet ". Example: "10 Kasey has 5 successful check ins and no direct reports yet". If the TechnicalLead does have reports it might look something like "10 Kasey has 5 successful check ins and is managing: /n 5 Niky has 2 successful check ins"
-            String team = "";
+             String team = "";
              for (int i = 0; i < this.directReports.size(); i++) {
-            team+="\n"+(directReports.get(i));
+            team+="\n"+(directReports.get(i).employeeStatus());
              }
         
-            return this.employeeStatus() + "\nManaging: " +team;
+            return "Team Lead: "+this.employeeStatus() + "\nManaging: " +team;
         }  
           
         public String employeeStatus(){
